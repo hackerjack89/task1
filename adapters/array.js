@@ -10,17 +10,30 @@ class ArrayAdapter{
 
 
     save(obj){
+        obj["_id"] = this.collection.length;
         this.collection.push(obj)
+        return obj["_id"];
     }
 
-
-    update(obj,old_obj) {
-        var keys = Object.keys(old_obj);
-        if(this.collection.some(function(o){return o[keys[0]] === old_obj[keys[0]];})){
-            var index = this.collection.findIndex(x => x[keys[0]] === old_obj[keys[0]])
-            this.collection[index] = obj;
+    updateWithQuery(query, changeset){
+        var keys = Object.keys(query);
+        var index = this.collection.findIndex(x => x[keys[0]] == query[keys[0]]);
+        if(index > -1){ //Element exists
+            changeset["_id"]=index;
+            this.collection[index]=changeset;
+            return this.collection[index];
+        }else{
+            return null
         }
-       
+    }
+
+    find(query){
+        var keys = Object.keys(query);
+        return this.collection.filter(x => x[keys[0]] == query[keys[0]])
+    }
+
+    update(obj) {
+        this.collection[obj._id] = obj
         return obj;
     }
 
@@ -29,6 +42,7 @@ class ArrayAdapter{
     }
 
     findOne(index){
+        
         if(this.collection[index] != undefined){
             return this.collection[index];
         }else{
