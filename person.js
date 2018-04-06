@@ -32,54 +32,39 @@ class Person {
   }
 
   save() {
-    this.adapter.save(this.delta, (savedObj) => {
-      this.delta = {};
-      this.data = savedObj;
-    });
-    return this;
+    return this.adapter
+      .save(this.delta)
+      .then((res) => {
+        this.delta = {};
+        this.data = res;
+        return this;
+      });
+  };
+
+  update() {
+    return this.adapter
+      .update(this.delta)
+      .then((res) => {
+        this.data = res;
+        this.delta = {}
+        return this;
+      })
   }
 
-  update(cb) {
-    this.adapter.update(this.delta, (res) => {
-      this.data = res;
-      this.delta = {}
-      if (typeof cb === 'function') {
-        cb(res);
-      }
-    });
+  static updateWithQuery(query, changeset, adapter = arrayAdapter) {
+    return adapter.updateWithQuery(query, changeset);
   }
 
-  static updateWithQuery(query,changeset,cb, adapter=arrayAdapter){
-    adapter.updateWithQuery(query, changeset, (res) => {
-      if(typeof cb === 'function'){
-        return cb(res);
-      }
-    });
+  static findOne(index, adapter=arrayAdapter){
+    return adapter.findOne(index);
   }
 
-  static findOne(index, cb, adapter=arrayAdapter){
-    adapter.findOne(index, (res) => {
-      if(typeof cb === 'function'){
-        cb(res);
-      }
-    });
+  static find(query, adapter=arrayAdapter){
+    return adapter.find(query);
   }
 
-  static find(query, cb, adapter=arrayAdapter){
-    adapter.find(query,(res) => {
-      if(typeof cb === 'function'){
-        cb(res)
-      }
-    })
-    
-  }
-
-   static getAll(cb, adapter=arrayAdapter){
-     adapter.getAll( (people) => {
-       if(typeof cb === 'function'){
-        return cb(people);
-       }
-    });
+   static getAll(adapter=arrayAdapter){
+     return adapter.getAll();
   }
 }
 
