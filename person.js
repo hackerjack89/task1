@@ -31,21 +31,25 @@ class Person {
     return this;
   }
 
-  save() {
+  save(cb) {
     this.adapter.save(this.delta, (savedObj) => {
       this.delta = {};
       this.data = savedObj;
+      if(typeof cb === 'function'){
+        cb(this);
+      }
     });
-    return this;
   }
 
   update(cb) {
     this.adapter.update(this.delta, (res) => {
-      this.data = res;
-      this.delta = {}
-      if (typeof cb === 'function') {
-        cb(res);
-      }
+      setTimeout( () => {
+        this.data = res;
+        this.delta = {}
+        if (typeof cb === 'function') {
+          cb(res);
+        }
+      },500)
     });
   }
 
