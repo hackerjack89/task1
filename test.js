@@ -74,11 +74,6 @@ p4
       });
   })
 
-console.log("Printing p1: ", p1);
-console.log("Printing p2: ", p2);
-console.log("Printing p3: ", p3);
-console.log("Printing p4: ", p4);
-
 setTimeout(() => {
   //Finding person
   Person
@@ -99,22 +94,77 @@ setTimeout(() => {
       console.log("Output of find: ", res);
     })
 
-}, 1000);
-//assign method testing
-console.log("now testing assign method");
-var p5 = new Person();
-p5.save()
-  .then((res) => {
+}, 50);
+
+setTimeout(() => {
+  //assign method testing
+  console.log("now testing assign method");
+  var p5 = new Person();
+  p5.save().then(res => {
     res
       .set("name", "mack")
       .set("age", 22)
       .set("gender", "male")
       .set("designation", "developer")
-      .set("salary", 1600)
-    console.log("Printing person before assign: ", res)
-    console.log("assiging object", {name: "jack", age: 99})
-    res.assign({name: "jack", age: 99})
-    console.log("Printing person after assign: ", res)
-    return res
+      .set("salary", 1600);
+    console.log("Printing person before assign: ", res);
+    console.log("assiging object", { name: "jack", age: 99 });
+    res.assign({ name: "jack", age: 99 });
+    console.log("Printing person after assign: ", res);
+    return res;
+  });
+}, 100); 
+
+setTimeout(() => {
+  console.log("Output of upsert")
+  Person
+  .upsert({name: "abc"}, {age: 30})
+  .then((res) => console.log("Printing output of upsert for existing record: ", res))
+  .catch(err => {
+    console.log(err)
   })
 
+  Person
+  .upsert({name: "pqr"}, {age: 30})
+  .then((res) => console.log("Printing output of upsert for query returning multiple records: ", res))
+  .catch(err => {
+    console.log("output of multiple records")
+    console.log(err)
+  })
+
+  Person
+  .upsert({name: "hackerjack"}, {age: 30})
+  .then((res) => console.log("Printing output of upsert for non-existing record: ", res))
+  .catch(err => {
+    console.log(err)
+  })
+
+
+}, 200)
+
+setTimeout(() => {
+  console.log("Output of upsertAll")
+  Person
+  .upsertAll({name: "abc"}, {age: 32})
+  .then((res) => console.log("Printing output of upsertAll for existing record: ", res))
+  .catch(err => {
+    console.log(err)
+  })
+
+  Person
+  .upsertAll({name: "pqr"}, {age: 32})
+  .then((res) => console.log("Printing output of upsertAll for query returning multiple records: ", res))
+  .catch(err => {
+    console.log("output of multiple records")
+    console.log(err)
+  })
+
+  Person
+  .upsertAll({name: "hackerjack"}, {age: 32})
+  .then((res) => console.log("Printing output of upsertAll for non-existing record: ", res))
+  .catch(err => {
+    console.log(err)
+  })
+
+
+}, 300)

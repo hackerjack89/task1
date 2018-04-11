@@ -1,10 +1,12 @@
 var ArrayAdapter = require('./adapters/array');
 var arrayAdapter = new ArrayAdapter();
 
+const ADAPTER = arrayAdapter;
+
 class Person {
   constructor(obj={}, adapter){
    this.data={}
-   this.adapter = adapter || arrayAdapter;
+   this.adapter = adapter || ADAPTER;
    this.delta = obj;
   }
 
@@ -51,21 +53,31 @@ class Person {
       })
   }
 
-  static updateWithQuery(query, changeset, adapter = arrayAdapter) {
+  static updateWithQuery(query, changeset, adapter = ADAPTER) {
     return adapter.updateWithQuery(query, changeset);
   }
 
-  static findOne(index, adapter=arrayAdapter){
+  static findOne(index, adapter=ADAPTER){
     return adapter.findOne(index);
   }
 
-  static find(query, adapter=arrayAdapter){
+  static find(query, adapter=ADAPTER){
     return adapter.find(query);
   }
 
-   static getAll(adapter=arrayAdapter){
+   static getAll(adapter=ADAPTER){
      return adapter.getAll();
   }
+
+  static upsert(query, delta, adapter=ADAPTER){
+    return adapter.upsert(query, delta)
+  }
+
+  static upsertAll(query, delta, adapter=ADAPTER){
+    return adapter.upsertAll(query, delta)
+  }
+
+
 }
 
 module.exports = Person;
