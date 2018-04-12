@@ -40,18 +40,17 @@ class ArrayAdapter {
     });
   }
 
-  update(obj) {
+  update(delta) {
     return new Promise((resolve, reject) => {
       //get an existing data using obj._id as a collection index id
-      var data = this.collection[obj._id];
+      var data = this.collection[delta._id];
       //get all keys of object
-      var keys = Object.keys(obj);
+      var keys = Object.keys(delta);
       keys.forEach(k => {
-        data[k] = obj[k];
+        data[k] = delta[k];
       });
-      //replace old data with modified data
-      this.collection[obj._id] = data;
-      resolve(this.collection[obj._id]);
+      //replace old data with modified data and resolve
+      resolve(this.collection[delta._id] = data);
     });
   }
 
