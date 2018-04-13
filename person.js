@@ -206,6 +206,11 @@ class Person {
     return adapter.updateWithQuery(query, changeset);
   }
 
+  /**
+   * 
+   * @param {String|Number} index - primary key for identifying record
+   * @param {Object} adapter - Optional argument to specify adapter.
+   */
   static findOne(index, adapter = ADAPTER) {
     return adapter.findOne(index);
   }

@@ -50,7 +50,7 @@ class ArrayAdapter {
         data[k] = delta[k];
       });
       //replace old data with modified data and resolve
-      resolve(this.collection[delta._id] = data);
+      resolve((this.collection[delta._id] = data));
     });
   }
 
@@ -80,7 +80,8 @@ class ArrayAdapter {
         } else if (res.length > 1) {
           //More than one records are found. return error
           return reject(
-            new Error("More than one records are found. Please use upserAll()")
+            new Error(`More than one records are found.
+            Please use upserAll()`)
           );
         } else {
           //single record is found, update it.
@@ -104,21 +105,18 @@ class ArrayAdapter {
           Object.assign(obj, delta);
           this.save(obj).then(data => resolve(data));
         } else if (res.length > 1) {
-					//More than one records are found. return error
-					let dataLength = res.length
-					let result= new Array(dataLength)
-					res.forEach((val, index)=> {
-						console.log("Printing id: ", val["_id"])
-						let obj = val
-						Object.assign(obj, {_id: val["_id"]}, delta)
-						this
-						.update(obj)
-						.then(res => {
-								result[index] = res
-						})
-						if(dataLength === (index+1))
-							resolve(result)
-					})
+          //More than one records are found. return error
+          let dataLength = res.length;
+          let result = new Array(dataLength);
+          res.forEach((val, index) => {
+            console.log("Printing id: ", val["_id"]);
+            let obj = val;
+            Object.assign(obj, { _id: val["_id"] }, delta);
+            this.update(obj).then(res => {
+              result[index] = res;
+            });
+            if (dataLength === index + 1) resolve(result);
+          });
         } else {
           //single record is found, update it.
           let obj = query;
