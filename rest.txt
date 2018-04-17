@@ -1,0 +1,26 @@
+curl -i -X POST \
+-H "application_api_key: blt235f2d8cc1ce6005" \
+-H "Content-Type: application/json" \
+-d '{
+  "application_user": {
+    "email": "test2@mail.com", 
+    "first_name": "test2",
+    "last_name": "test2last",
+    "password": "test123",
+    "password_confirmation": "test123"
+
+  }
+}' \
+https://api.built.io/v1/application/users
+
+curl -i -X POST \
+-H "application_api_key: blt235f2d8cc1ce6005" \
+-H "Content-Type: application/json" \
+-d '{
+  "application_user": {
+    "email": "test2@mail.com", 
+    "password": "test123"
+
+  }
+}' \
+https://api.built.io/v1/application/users/login

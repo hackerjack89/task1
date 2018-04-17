@@ -16,12 +16,13 @@ p1 = p1.then(res => {
 p1.then(res => {
   console.log("Response of update: ", res.toJSON())
 })
+*/
 Person.getAll()
 .then(res => {
   console.log("Printing response of getAll(): ", res )
 })
 .catch(err => console.log("Error occured from getAll():  ", err))
-
+/*
 Person.updateWithQuery({name: "lol"}, {name: "peter"})
 .then(res => {
   console.log("output of update with query: ", res)
@@ -61,6 +62,7 @@ p2
 })
 .catch(err => console.log("Error occured in creating unique person:  ", JSON.stringify(err)))
 */
+/*
 Person.upsert({name: 'unique_person'},{age: 1888})
 .then(res => {
   console.log("res of single record for upsert: ", res);
@@ -84,6 +86,7 @@ Person.upsert({name: "non-existing"}, {age: 9999})
 .catch(err => {
   console.log("Error occured in upsert for non-existing record: ", err);
 });
+*/
 /*
 for(let i=0; i < 6; i++){
   

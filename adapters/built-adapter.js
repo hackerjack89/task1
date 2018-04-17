@@ -1,9 +1,9 @@
 var Built = require('built.io')
-var BuiltApp = Built.App('blt235f2d8cc1ce6005');
 class BuiltAdapter {
-  constructor(className, options) {
-    this.Model = BuiltApp.Class(className).Object;
-    this.query = BuiltApp.Class(className).Query;
+  constructor(apiKey, className) {
+    this.BuiltApp = Built.App(apiKey);
+    this.Model = this.BuiltApp.Class(className).Object;
+    this.query = this.BuiltApp.Class(className).Query;
     this.className = className;
     this.idField = "uid";
   }
@@ -25,7 +25,9 @@ class BuiltAdapter {
 
   updateWithQuery(query, changeset) {
     return this.find(query).then(res => {
-      return this.update(Object.assign(changeset, { uid: res[0]["uid"] }));
+      if(res.length > 0){
+        return this.update(Object.assign(changeset, { uid: res[0]["uid"] }));
+      }
     });
   }
 
@@ -38,7 +40,7 @@ class BuiltAdapter {
   }
 
   findOne(id) {
-    return BuiltApp.Class(this.className).Object(id).fetch().then(res => {
+    return this.BuiltApp.Class(this.className).Object(id).fetch().then(res => {
         return res.toJSON();
       });
   }
@@ -59,14 +61,11 @@ class BuiltAdapter {
       if(res.length > 1){
         return new Promise((resolve, reject) => {
           res.forEach(e => {
-            console.log("Printing e:", e)
             let uid = e['uid']
             let toUpsert = this.Model(Object.assign(delta, query));
             return toUpsert.upsert(Object.assign(query, {uid: uid})).save().then(res => {
               result.push(res.toJSON())
-              if(dataLength === counter) {
-                resolve(result);
-              }
+              if(dataLength === counter) {resolve(result);}
               counter++
             })
           });

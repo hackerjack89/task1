@@ -109,14 +109,15 @@ class ArrayAdapter {
           //More than one records are found. return error
           let dataLength = res.length;
           let result = new Array(dataLength);
+          let counter = 1
           res.forEach((val, index) => {
-            console.log("Printing id: ", val["_id"]);
             let obj = val;
             Object.assign(obj, { _id: val["_id"] }, delta);
             this.update(obj).then(res => {
               result[index] = res;
             });
-            if (dataLength === index + 1) resolve(result);
+            if (dataLength === counter) resolve(result);
+            counter++
           });
         } else {
           //single record is found, update it.
