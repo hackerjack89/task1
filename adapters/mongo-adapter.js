@@ -1,12 +1,12 @@
 let Mongo = require("mongodb");
 let MongoClient = Mongo.MongoClient;
-
 class MongoAdapter {
   constructor(dbName, collectionName) {
     this.dbName = dbName;
     this.db = "";
     this.collectionName = collectionName;
     this.collection = "";
+    this.idField = "_id";
   }
 
   connect() {

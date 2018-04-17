@@ -2,14 +2,17 @@
  * By default uses array adapter, but adapter can also be supplied from 
  * constructor
  */
-let ArrayAdapter = require('./adapters/array-adapter');
+let ArrayAdapter = require('./adapters/array-adapter')
 let arrayAdapter = new ArrayAdapter();
 
-let MongoAdapter = require('./adapters/mongo-adapter');
+let MongoAdapter = require('./adapters/mongo-adapter')
 let mongoAdapter = new MongoAdapter('task1', 'Persons')
 
+let BuiltAdapter = require('./adapters/built-adapter')
+let builtAdapter = new BuiltAdapter('person')
+
 //const ADAPTER = arrayAdapter;
-const ADAPTER = mongoAdapter;
+const ADAPTER = builtAdapter;
 
 /**
  * Represents a person. Person can have any number of attributes. Number of 
@@ -31,6 +34,7 @@ class Person {
   constructor(obj = {}, adapter) {
     this.data = {};
     this.adapter = adapter || ADAPTER;
+    this.idField = this.adapter.idField;
     this.delta = obj;
   }
 
@@ -50,7 +54,7 @@ class Person {
   /**
    * sets the changes to person in delta. Person needs to be saved first
    * before calling this method.
-   * 
+   *
    * @param {String} key - name of the attribtute to set on person
    * @param {Any} value - value to be saved against the key on person
    *
@@ -72,7 +76,7 @@ class Person {
    *
    */
   set(key, value) {
-    this.delta["_id"] = this.data._id;
+    this.delta[this.idField] = this.data[this.idField];
     this.delta[key] = value;
     return this;
   }
@@ -81,23 +85,23 @@ class Person {
    * Assigns an object with multiple or single attributes. If attribute(s) are
    * present in delta, then attributes assigned using this method
    * overrides attributes assing using set(key,val). If attribute(s) are not
-   * present in delta, they are created 
-   * 
-   * @param {Object} obj - An object with set of attributes 
-   * 
-   * @returns {Object} Returns current person object with delta set using 
+   * present in delta, they are created
+   *
+   * @param {Object} obj - An object with set of attributes
+   *
+   * @returns {Object} Returns current person object with delta set using
    * contents of given object parameter
-   * 
+   *
    * @example
-   * 
+   *
    * p1 = new Person().save()
-   * p1.set("name","jack") 
+   * p1.set("name","jack")
    * p1.set("age",20})
    * => Person {
    *      ...
    *      delta: {name: "jack", age: 20}
    *    }
-   * 
+   *
    * p1.assign({age: 25, gender: 'm'})
    * => Person{
    *      ...
@@ -105,7 +109,7 @@ class Person {
    *    }
    */
   assign(obj) {
-    this.delta["_id"] = this.data._id;
+    this.delta[this.idField] = this.data[this.idField];
     for (var i in obj) {
       this.delta[i] = obj[i];
     }
@@ -115,9 +119,9 @@ class Person {
   /**
    * Rollbacks all the changes that are set on person using either set() or
    * assign() method.
-   * 
+   *
    * @returns {Object} Returns current person object after emptying delta.
-   * 
+   *
    * @example
    * p1 = new Person().save()
    * p1.set("name", "jack")
@@ -128,7 +132,7 @@ class Person {
    * p1.revert()
    * => Person{
    *      ...
-   *      delta:{} 
+   *      delta:{}
    *    }
    */
   revert() {
@@ -137,14 +141,14 @@ class Person {
   }
 
   /**
-   * Saves the current person in storage defined 
+   * Saves the current person in storage defined
    * by adapter(default array adpter) this object with data property set
    * with the id along with other attributes(if any) passed in constructor
-   * 
+   *
    * @returns {Object} Returns current person object after saving
-   * 
+   *
    * @example
-   * 
+   *
    * p1 = new Person({name: "jack"})
    * p1.save()
    * => Person{
@@ -152,7 +156,7 @@ class Person {
    *      data: {_id: 1}
    *    }
    */
-  save() { 
+  save() {
     return this.adapter.save(this.delta).then(res => {
       this.delta = {};
       this.data = res;
@@ -163,11 +167,11 @@ class Person {
   /**
    * Updates current person object using the values in delta. Person should be
    * saved first, before calling this method on it.
-   * 
+   *
    * @returns {Object} Returns current person object after successful updation
-   * 
+   *
    * @example
-   * 
+   *
    * p1 = new Person({name: "jack"}).save()
    * => Person{
    *      ...
@@ -195,19 +199,19 @@ class Person {
    * @param {Object} changeset - Changes that are to be commited
    * @param {Object} adapter - Optional adapter, if not specifed defaults to
    * arrayAdapter
-   * 
+   *
    * @returns {Object} - Returns a promise object having a JSON response.
-   * 
+   *
    * @example
-   * 
-   * 
+   *
+   *
    */
   static updateWithQuery(query, changeset, adapter = ADAPTER) {
     return adapter.updateWithQuery(query, changeset);
   }
 
   /**
-   * 
+   *
    * @param {String|Number} index - primary key for identifying record
    * @param {Object} adapter - Optional argument to specify adapter.
    */
@@ -229,6 +233,13 @@ class Person {
 
   static upsertAll(query, delta, adapter = ADAPTER) {
     return adapter.upsertAll(query, delta);
+  }
+
+  toString() {
+    return {
+      data: this.data,
+      delta: this.delta
+    };
   }
 }
 

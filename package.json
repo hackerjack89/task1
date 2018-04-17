@@ -4,6 +4,7 @@
   "description": "",
   "main": "person.js",
   "dependencies": {
+    "built.io": "^4.2.0",
     "mongodb": "^3.0.6"
   },
   "devDependencies": {},

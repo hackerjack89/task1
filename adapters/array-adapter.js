@@ -1,6 +1,7 @@
 class ArrayAdapter {
   constructor() {
     this.collection = [];
+    this.idField = "_id"
   }
 
   getAll() {
