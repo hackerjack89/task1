@@ -68,7 +68,7 @@ p4
   .then((res) => {
     console.log("updating person with name lmn, to name lol");
     Person
-      .updateWithQuery({ name: "lmn" }, { name: "lol" })
+      .updateWithQuery({ name: "lmn" }, { name: 'lol', age: 9999, salary: 16000, gender: 'm' })
       .then((res) => {
         console.log("Output of updateWithQuery: ", res);
       });

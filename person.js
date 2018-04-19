@@ -1,4 +1,4 @@
-var ArrayAdapter = require('./adapters/array');
+var ArrayAdapter = require('./adapters/array-adapter');
 var arrayAdapter = new ArrayAdapter();
 
 const ADAPTER = arrayAdapter;
