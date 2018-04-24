@@ -4,21 +4,28 @@ class ArrayAdapter {
     this.idField = "_id"
   }
 
+  deleteAll(){
+    this.collection = []
+  }
+
   getAll() {
     return new Promise((resolve, reject) => {
       resolve(this.collection);
     });
   }
-
   save(obj) {
     //get the value of id attribute from array length,
     //since array index can be used as an id to locate
     //an element in array
     return new Promise((resolve, reject) => {
-      var _id = this.collection.length;
-      obj["_id"] = _id;
-      this.collection.push(obj);
-      resolve(this.collection[_id]);
+      if( obj && (Object.prototype.toString.call(obj) === '[object Object]') ){
+        var _id = this.collection.length;
+        obj["_id"] = _id;
+        this.collection.push(obj);
+        resolve(this.collection[_id]);
+      }else{
+        reject(new Error("Parameter should be an Object."))
+      }
     });
   }
 
