@@ -1,7 +1,13 @@
-let Person = require('./person')
+let Person = require('./person');
 
+global.setT
 Person.getAll().then(res => console.log("getAll(): ", res.length))
-.catch(err => console.log(err))
+  .catch(err => {
+    console.log(err)
+  });
+
+console.log('test')
+
 /*
 //for(i = 1; i < 4; i++){
 

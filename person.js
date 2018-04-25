@@ -1,21 +1,21 @@
 /**
- * By default uses array adapter, but adapter can also be supplied from 
+ * By default uses array adapter, but adapter can also be supplied from
  * constructor
  */
-let ArrayAdapter = require('./adapters/array-adapter')
+let ArrayAdapter = require('./adapters/array-adapter');
 let arrayAdapter = new ArrayAdapter();
 
-let MongoAdapter = require('./adapters/mongo-adapter')
-let mongoAdapter = new MongoAdapter('task1', 'Persons')
+let MongoAdapter = require('./adapters/mongo-adapter');
+let mongoAdapter = new MongoAdapter('task1', 'Persons');
 
-let BuiltAdapter = require('./adapters/built-adapter')
-let builtAdapter = new BuiltAdapter('blt235f2d8cc1ce6005', 'person')
+let BuiltAdapter = require('./adapters/built-adapter');
+let builtAdapter = new BuiltAdapter('blt235f2d8cc1ce6005', 'person');
 
-let ApiAdapter = require('./adapters/api-adapter')
-let apiAdapter = new ApiAdapter('blt235f2d8cc1ce6005', 'person', 'test2@mail.com', 'test123')
+let ApiAdapter = require('./adapters/api-adapter');
+let apiAdapter = new ApiAdapter('blt235f2d8cc1ce6005', 'person', 'test2@mail.com', 'test123');
 
-//const ADAPTER = arrayAdapter;
-const ADAPTER = apiAdapter;
+const ADAPTER = arrayAdapter;
+//const ADAPTER = apiAdapter;
 
 /**
  * Represents a person. Person can have any number of attributes. Number of 
